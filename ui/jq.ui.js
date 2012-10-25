@@ -3999,20 +3999,10 @@ if (!HTMLElement.prototype.unwatch) {
 
             if(target.indexOf("#") == -1) {
                 var urlHash = "url" + crc32(target); //Ajax urls
-<<<<<<< HEAD
-                var crcCheck = jq("div.panel[data-crc='" + urlHash + "']");
-                if($am(target)){
-                    loadAjax=false;
-                }
-                else if(crcCheck.length > 0) {
-                    if(crcCheck.length > 0) target = "#" + crcCheck.get(0).id
-                } else if($am(urlHash)) {
 
-=======
                 var divToLoad = $am(urlHash);
                 if(!divToLoad) divToLoad = $('[data-url="' + target + '"]');
                 if (divToLoad && divToLoad.length > 0) {
->>>>>>> fix jqui ajax transitions 3
                     //ajax div already exists.  Let's see if we should be refreshing it.
                     loadAjax = false;
                     if (divToLoad.attr("data-cache") != 'yes' && ((anchor && anchor.getAttribute("data-refresh-ajax") === 'true') || (anchor && anchor.refresh && anchor.refresh === true) || this.isAjaxApp)) {//(divToLoad.attr("data-cache") != 'yes') &&
@@ -4179,7 +4169,6 @@ if (!HTMLElement.prototype.unwatch) {
                         that.updateContentDiv(urlHash, xmlhttp.responseText);
                         $am(urlHash).title = anchor.title ? anchor.title : target;
                     } else if(anchor.getAttribute("data-persist-ajax")||that.isAjaxApp) {
-
                         var refresh = (anchor.getAttribute("data-pull-scroller") === 'true') ? true : false;
                         refreshFunction = refresh ?
                         function() {
