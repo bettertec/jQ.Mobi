@@ -3999,19 +3999,15 @@ if (!HTMLElement.prototype.unwatch) {
 
             if(target.indexOf("#") == -1) {
                 var urlHash = "url" + crc32(target); //Ajax urls
-                var crcCheck = jq("div.panel[data-crc='" + urlHash + "']");
-                if($am(target)){
-                    loadAjax=false;
-                }
-                else if(crcCheck.length > 0) {
-                    if(crcCheck.length > 0) target = "#" + crcCheck.get(0).id
-                } else if($am(urlHash)) {
-
+                var divToLoad = $am(urlHash);
+                if(!divToLoad) divToLoad = $('[data-url="' + target + '"]');
+                if (divToLoad && divToLoad.length > 0) {
                     //ajax div already exists.  Let's see if we should be refreshing it.
                     loadAjax = false;
-                    if(anchor.getAttribute("data-refresh-ajax") === 'true' || (anchor.refresh && anchor.refresh === true || this.isAjaxApp)) {
+                    if (divToLoad.attr("data-cache") != 'yes' && ((anchor && anchor.getAttribute("data-refresh-ajax") === 'true') || (anchor && anchor.refresh && anchor.refresh === true) || this.isAjaxApp)) {//(divToLoad.attr("data-cache") != 'yes') &&
                         loadAjax = true;
-                    } else target = "#" + urlHash;
+                    } else
+                        target = "#" + divToLoad.attr('id');
                 }
             }
             if(target.indexOf("#") == -1 && loadAjax) {
@@ -4156,9 +4152,9 @@ if (!HTMLElement.prototype.unwatch) {
         loadAjax: function(target, newTab, back, transition, anchor) {
             // XML Request
             if(this.activeDiv.id == "jQui_ajax" && target == this.ajaxUrl) return;
+            
             var urlHash = "url" + crc32(target); //Ajax urls
             var that = this;
-            if(target.indexOf("http") == -1) target = AppMobi.webRoot + target;
             if(target.indexOf("http") == -1) target = AppMobi.webRoot + target;
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
@@ -4172,7 +4168,6 @@ if (!HTMLElement.prototype.unwatch) {
                         that.updateContentDiv(urlHash, xmlhttp.responseText);
                         $am(urlHash).title = anchor.title ? anchor.title : target;
                     } else if(anchor.getAttribute("data-persist-ajax")||that.isAjaxApp) {
-
                         var refresh = (anchor.getAttribute("data-pull-scroller") === 'true') ? true : false;
                         refreshFunction = refresh ?
                         function() {
@@ -4365,6 +4360,7 @@ if (!HTMLElement.prototype.unwatch) {
             var contentDivs = this.viewportContainer.get().querySelectorAll(".panel");
             for(var i = 0; i < contentDivs.length; i++) {
                 var el = contentDivs[i];
+                if(!el.id) el.id = "startPanel";
                 var tmp = el;
                 var id;
                 if(el.parentNode && el.parentNode.id != "content") {
