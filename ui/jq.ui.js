@@ -4167,7 +4167,7 @@ if (!HTMLElement.prototype.unwatch) {
                     if($am(urlHash) !== undefined) {
                         that.updateContentDiv(urlHash, xmlhttp.responseText);
                         $am(urlHash).title = anchor.title ? anchor.title : target;
-                    } else if(anchor.getAttribute("data-persist-ajax")||that.isAjaxApp) {
+                    } else if(that.isAjaxApp || anchor.getAttribute("data-persist-ajax")) {
                         var refresh = (anchor.getAttribute("data-pull-scroller") === 'true') ? true : false;
                         refreshFunction = refresh ?
                         function() {
