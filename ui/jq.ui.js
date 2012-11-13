@@ -3702,23 +3702,32 @@ if (!HTMLElement.prototype.unwatch) {
          * @title $.ui.updateContentDiv(id,content);
          */
         updateContentDiv: function(id, content) {
+        	console.log('updateContentDiv');
+        	
             var el = $am(id);
-            if(!el) return;
+            if(!el){
+            	return;
+            }
+            console.log(el);
 
             var newDiv = document.createElement("div");
             newDiv.innerHTML = content;
-            if($(newDiv).children('.panel') && $(newDiv).children('.panel').length > 0) newDiv = $(newDiv).children('.panel').get();
+            if($(newDiv).children('.panel, .jqmScrollPanel') && $(newDiv).children('.panel, .jqmScrollPanel').length > 0) newDiv = $(newDiv).children('.panel, .jqmScrollPanel').get();
 
 
 
             if(el.getAttribute("js-scrolling") && el.getAttribute("js-scrolling").toLowerCase() == "yes") {
+            	console.log('js-scrolling');
                 $.cleanUpContent(el.childNodes[0], false, true);
-                el.childNodes[0].innerHTML = content;
+                el.childNodes[0].innerHTML = newDiv.innerHTML;
             } else {
+            	console.log('non js-scrolling');
                 $.cleanUpContent(el, false, true);
-                el.innerHTML = content;
+                el.innerHTML = newDiv.innerHTML;
             }
             if($(newDiv).title) el.title = $(newDiv).title;
+            console.log(el);
+            return el;
         },
         /**
          * Dynamically create a new panel on the fly.  It wires events, creates the scroller, applies Android fixes, etc.
@@ -3735,7 +3744,7 @@ if (!HTMLElement.prototype.unwatch) {
             if(!myEl) {
                 var newDiv = document.createElement("div");
                 newDiv.innerHTML = content;
-                if($(newDiv).children('.panel') && $(newDiv).children('.panel').length > 0) newDiv = $(newDiv).children('.panel').get();
+                if($(newDiv).children('.panel, .jqmScrollPanel') && $(newDiv).children('.panel, .jqmScrollPanel').length > 0) newDiv = $(newDiv).children('.panel, .jqmScrollPanel').get();
 
                 if(!newDiv.title && title) newDiv.title = title;
                 var newId = (newDiv.id) ? newDiv.id : el; //figure out the new id - either the id from the loaded div.panel or the crc32 hash
@@ -3748,7 +3757,10 @@ if (!HTMLElement.prototype.unwatch) {
             var that = this;
 
             myEl = null;
+            console.log("addContentDiv");
+            console.log(newDiv);
             that.addDivAndScroll(newDiv, refresh, refreshFunc);
+            console.log(newDiv);
             newDiv = null;
             return newId;
         },
@@ -3988,6 +4000,7 @@ if (!HTMLElement.prototype.unwatch) {
             if(this.doingTransition) {
                 var that = this;
                 this.loadContentQueue.push([target, newTab, back, transition, anchor]);
+                alert('is still doing transition');
                 return
             }
             if(target.length === 0) return;
@@ -4151,7 +4164,10 @@ if (!HTMLElement.prototype.unwatch) {
          */
         loadAjax: function(target, newTab, back, transition, anchor) {
             // XML Request
-            if(this.activeDiv.id == "jQui_ajax" && target == this.ajaxUrl) return;
+            if(this.activeDiv.id == "jQui_ajax" && target == this.ajaxUrl){
+            	alert('this.activeDiv.id == "jQui_ajax" && target == thi');
+            	return;
+            }
             
             var urlHash = "url" + crc32(target); //Ajax urls
             var that = this;
@@ -4165,9 +4181,11 @@ if (!HTMLElement.prototype.unwatch) {
 
                     //Here we check to see if we are retaining the div, if so update it
                     if($am(urlHash) !== undefined) {
+                    	console.log("ajax response: update current div");
                         that.updateContentDiv(urlHash, xmlhttp.responseText);
                         $am(urlHash).title = anchor.title ? anchor.title : target;
                     } else if(that.isAjaxApp || anchor.getAttribute("data-persist-ajax")) {
+                    	console.log("ajax response: no current div found");
                         var refresh = (anchor.getAttribute("data-pull-scroller") === 'true') ? true : false;
                         refreshFunction = refresh ?
                         function() {
