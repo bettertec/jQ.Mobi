@@ -4012,6 +4012,7 @@ if (!HTMLElement.prototype.unwatch) {
 
             if(target.indexOf("#") != 0) {
                 var urlHash = "url" + crc32(target); //Ajax urls
+
                 var divToLoad = $am(urlHash);
                 if(!divToLoad) divToLoad = $('[data-url="' + target + '"]');
                 if (divToLoad && divToLoad.length > 0) {
@@ -4182,7 +4183,6 @@ if (!HTMLElement.prototype.unwatch) {
                         that.updateContentDiv(urlHash, xmlhttp.responseText);
                         $am(urlHash).title = anchor.title ? anchor.title : target;
                     } else if(that.isAjaxApp || anchor.getAttribute("data-persist-ajax")) {
-                    	console.log("ajax response: no current div found");
                         var refresh = (anchor.getAttribute("data-pull-scroller") === 'true') ? true : false;
                         refreshFunction = refresh ?
                         function() {
