@@ -3744,7 +3744,7 @@ if (!HTMLElement.prototype.unwatch) {
             if(!myEl) {
                 var newDiv = document.createElement("div");
                 newDiv.innerHTML = content;
-                if($(newDiv).children('.panel, .jqmScrollPanel') && $(newDiv).children('.panel, .jqmScrollPanel').length > 0) newDiv = $(newDiv).children('.panel, .jqmScrollPanel').get();
+                if($(newDiv).children('.panel') && $(newDiv).children('.panel').length > 0) newDiv = $(newDiv).children('.panel').get();
 
                 if(!newDiv.title && title) newDiv.title = title;
                 var newId = (newDiv.id) ? newDiv.id : el; //figure out the new id - either the id from the loaded div.panel or the crc32 hash
@@ -3753,7 +3753,7 @@ if (!HTMLElement.prototype.unwatch) {
             } else {
                 newDiv = myEl;
             }
-            newDiv.className = "panel";
+            $(newDiv).addClass("panel");
             var that = this;
 
             myEl = null;
@@ -4001,7 +4001,6 @@ if (!HTMLElement.prototype.unwatch) {
             if(this.doingTransition) {
                 var that = this;
                 this.loadContentQueue.push([target, newTab, back, transition, anchor]);
-                alert('is still doing transition');
                 return
             }
             if(target.length === 0) return;
@@ -4011,7 +4010,7 @@ if (!HTMLElement.prototype.unwatch) {
             that.hideMask();
             var loadAjax = true;
 
-            if(target.indexOf("#") == -1) {
+            if(target.indexOf("#") != 0) {
                 var urlHash = "url" + crc32(target); //Ajax urls
                 var divToLoad = $am(urlHash);
                 if(!divToLoad) divToLoad = $('[data-url="' + target + '"]');
@@ -4024,7 +4023,7 @@ if (!HTMLElement.prototype.unwatch) {
                         target = "#" + divToLoad.attr('id');
                 }
             }
-            if(target.indexOf("#") == -1 && loadAjax) {
+            if(target.indexOf("#") != 0 && loadAjax) {
                 anchor = anchor || document.createElement("a"); //Hack to allow passing in no anchor
                 this.loadAjax(target, newTab, back, transition, anchor);
             } else {
@@ -4165,18 +4164,15 @@ if (!HTMLElement.prototype.unwatch) {
          */
         loadAjax: function(target, newTab, back, transition, anchor) {
             // XML Request
-            if(this.activeDiv.id == "jQui_ajax" && target == this.ajaxUrl){
-            	alert('this.activeDiv.id == "jQui_ajax" && target == thi');
-            	return;
-            }
+            if(this.activeDiv.id == "jQui_ajax" && target == this.ajaxUrl) return;
             
             var urlHash = "url" + crc32(target); //Ajax urls
             var that = this;
-            if(target.indexOf("http") == -1) target = AppMobi.webRoot + target;
+            if(target.indexOf("http") != 0) target = AppMobi.webRoot + target;
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
                 if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    this.doingTransition = false;
+                    that.doingTransition = false;
 
                     var doReturn = false;
 
@@ -4209,7 +4205,7 @@ if (!HTMLElement.prototype.unwatch) {
                     that.parseScriptTags(div);
                     if(doReturn) return;
 
-                    return that.loadContent("#" + urlHash);
+                    return that.loadContent("#" + urlHash, newTab, back, transition);
 
                 }
             };
@@ -4541,8 +4537,8 @@ if (!HTMLElement.prototype.unwatch) {
          * @title $.ui.finishTransition(oldDiv)
          */
         finishTransition: function(oldDiv, currDiv) {
+        	this.doingTransition = false;
             oldDiv.style.display = 'none';
-            this.doingTransition = false;
             if(currDiv) this.clearAnimations(currDiv);
             $.trigger(this, "content-loaded");
         },
@@ -4617,9 +4613,10 @@ if (!HTMLElement.prototype.unwatch) {
                 e.preventDefault();
                 var mytransition = theTarget.getAttribute("data-transition");
                 var resetHistory = theTarget.getAttribute("data-resetHistory");
+                var back = (theTarget.getAttribute("data-reverse") && theTarget.getAttribute("data-reverse") == 'true')?true:false;
                 resetHistory = resetHistory && resetHistory.toLowerCase() == "true" ? true : false;
                 var href = theTarget.hash.length > 0 ? theTarget.hash : theTarget.href;
-                jq.ui.loadContent(href, resetHistory, 0, mytransition, theTarget);
+                jq.ui.loadContent(href, resetHistory, back, mytransition, theTarget);
                 return;
             }
         }
