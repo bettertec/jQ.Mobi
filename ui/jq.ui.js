@@ -3744,7 +3744,7 @@ if (!HTMLElement.prototype.unwatch) {
             if(!myEl) {
                 var newDiv = document.createElement("div");
                 newDiv.innerHTML = content;
-                if($(newDiv).children('.panel') && $(newDiv).children('.panel').length > 0) newDiv = $(newDiv).children('.panel').get();
+                if($(newDiv).children('.panel, .jqmScrollPanel') && $(newDiv).children('.panel, .jqmScrollPanel').length > 0) newDiv = $(newDiv).children('.panel, .jqmScrollPanel').get();
 
                 if(!newDiv.title && title) newDiv.title = title;
                 var newId = (newDiv.id) ? newDiv.id : el; //figure out the new id - either the id from the loaded div.panel or the crc32 hash
