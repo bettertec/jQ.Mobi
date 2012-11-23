@@ -4002,8 +4002,8 @@ if (!HTMLElement.prototype.unwatch) {
                 var that = this;
                 this.loadContentQueue.push([target, newTab, back, transition, anchor]);
                 return
-            }
-            if(target.length === 0) return;
+            }       
+            if(target.length <= 1) return;
 
             what = null;
             var that = this;
@@ -4606,7 +4606,7 @@ if (!HTMLElement.prototype.unwatch) {
                 }
 
                 //empty links
-                if(theTarget.href == "#" || (theTarget.href.length == 0 && theTarget.hash.length == 0)) return;
+                if(theTarget.href == "#" || theTarget.href.length <= 1 || !theTarget.hash || theTarget.hash.length == 0) return;
 
 
                 //internal links
