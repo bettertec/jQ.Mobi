@@ -4606,7 +4606,7 @@ if (!HTMLElement.prototype.unwatch) {
                 }
 
                 //empty links
-                if(theTarget.href == "#" || theTarget.href.length <= 1 || !theTarget.hash || theTarget.hash.length == 0) return;
+                if(theTarget.href == "#" || (theTarget.href.indexOf('#', theTarget.href.length - 1) !== -1)) return;//;   theTarget.href.length == 0 && theTarget.hash.length == 0
 
 
                 //internal links
