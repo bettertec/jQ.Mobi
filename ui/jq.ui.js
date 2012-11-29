@@ -3665,8 +3665,35 @@ if (!HTMLElement.prototype.unwatch) {
             var that = this;
             try {
                 if($am(id)) {
+                	console.log($am(id));
                     jq("#modalContainer").html($.feat.nativeTouchScroll ? $am(id).innerHTML : $am(id).childNodes[0].innerHTML + '', true);
                     jq('#modalContainer').append("<a href='javascript:;' onclick='$.ui.hideModal();' class='closebutton modalbutton'></a>");
+                    
+                    var classes = $am(id).className;
+                    classes = classes.replace('panel', '');
+                    jq('#modalContainer').get().className = classes;
+                    
+                    if($am(id).getAttribute('data-hideModal')){
+                    	jq('#modalContainer').unbind('click').bind('click', function(e){
+			            	if(e.target && e.target.id == 'modalContainer')
+			            		window[$am(id).getAttribute('data-hideModal')]();
+			            });
+                    }
+                    else{
+                    	jq('#modalContainer').unbind('click').bind('click', function(e){
+			            	if(e.target && e.target.id == 'modalContainer')
+			            		$.ui.hideModal();
+			            });	
+                    }
+                    
+                    
+                    if($am(id).getAttribute('data-load')){
+                    	console.log('exec data-load:');
+                    	setTimeout(function(){
+                    		window[$am(id).getAttribute('data-load')](jq('#modalContainer').get());
+                    	}, 50);
+                    }
+                    
                     this.modalWindow.style.display = "block";
 
                     button = null;
@@ -4360,8 +4387,11 @@ if (!HTMLElement.prototype.unwatch) {
             //setup modalDiv
             var modalDiv = document.createElement("div");
             modalDiv.id = "jQui_modal";
+
+            var modalContainer = jq("<div id='modalContainer'></div>");
+            
             this.viewportContainer.prepend(modalDiv);
-            modalDiv.appendChild(jq("<div id='modalContainer'></div>").get());
+            modalDiv.appendChild(modalContainer.get());
             this.scrollingDivs['modal_container'] = jq("#modalContainer").scroller({
                 scrollBars: true,
                 vertical: true,
