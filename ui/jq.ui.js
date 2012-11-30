@@ -3661,11 +3661,13 @@ if (!HTMLElement.prototype.unwatch) {
          * @param {String|Object} panel to show
          * @title $.ui.showModal();
          */
-        showModal: function(id) {
+        showModal: function(id, back, transition) {
             var that = this;
             try {
                 if($am(id)) {
                 	console.log($am(id));
+                	jq("#modalContainer").css('display', 'none');
+                	
                     jq("#modalContainer").html($.feat.nativeTouchScroll ? $am(id).innerHTML : $am(id).childNodes[0].innerHTML + '', true);
                     jq('#modalContainer').append("<a href='javascript:;' onclick='$.ui.hideModal();' class='closebutton modalbutton'></a>");
                     
@@ -3691,7 +3693,7 @@ if (!HTMLElement.prototype.unwatch) {
                     	console.log('exec data-load:');
                     	setTimeout(function(){
                     		window[$am(id).getAttribute('data-load')](jq('#modalContainer').get());
-                    	}, 50);
+                    	}, 0);
                     }
                     
                     this.modalWindow.style.display = "block";
@@ -3700,6 +3702,15 @@ if (!HTMLElement.prototype.unwatch) {
                     content = null;
                     this.scrollingDivs['modal_container'].enable(!that.resetScrollers);
                     this.scrollToTop('modal');
+                    
+                    jq("#modalContainer").css('display', 'block');
+                    if($am(id).getAttribute('data-transition')){
+                    	$.ui.clearAnimations($('#modalContainer').get());
+                    	var x_from = (back)? '-100%' : '100%';
+                    	$.ui.css3animate($('#modalContainer'), {x: x_from, y:'0%', time: 0, complete: function(){
+                    		$.ui.css3animate($('#modalContainer'), {x:'0%', y:'0%', time: 200});
+                    	}});
+                    }
                 }
             } catch(e) {
                 console.log("Error with modal - " + e, this.modalWindow);
@@ -4092,7 +4103,7 @@ if (!HTMLElement.prototype.unwatch) {
             }
 
             if(what.getAttribute("data-modal") == "true" || what.getAttribute("modal") == "true") {
-                return this.showModal(what.id);
+                return this.showModal(what.id, back, transition);
             }
             what.style.display = "block";
 
