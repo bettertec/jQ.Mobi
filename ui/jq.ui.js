@@ -3675,26 +3675,6 @@ if (!HTMLElement.prototype.unwatch) {
                     classes = classes.replace('panel', '');
                     jq('#modalContainer').get().className = classes;
                     
-                    if($am(id).getAttribute('data-hideModal')){
-                    	jq('#modalContainer').unbind('click').bind('click', function(e){
-			            	if(e.target && e.target.id == 'modalContainer')
-			            		window[$am(id).getAttribute('data-hideModal')]();
-			            });
-                    }
-                    else{
-                    	jq('#modalContainer').unbind('click').bind('click', function(e){
-			            	if(e.target && e.target.id == 'modalContainer')
-			            		$.ui.hideModal();
-			            });	
-                    }
-                    
-                    
-                    if($am(id).getAttribute('data-load')){
-                    	console.log('exec data-load:');
-                    	setTimeout(function(){
-                    		window[$am(id).getAttribute('data-load')](jq('#modalContainer').get());
-                    	}, 0);
-                    }
                     
                     this.modalWindow.style.display = "block";
 
@@ -3708,8 +3688,35 @@ if (!HTMLElement.prototype.unwatch) {
                     	$.ui.clearAnimations($('#modalContainer').get());
                     	var x_from = (back)? '-100%' : '100%';
                     	$.ui.css3animate($('#modalContainer'), {x: x_from, y:'0%', time: 0, complete: function(){
-                    		$.ui.css3animate($('#modalContainer'), {x:'0%', y:'0%', time: 200});
+                    		$.ui.css3animate($('#modalContainer'), {x:'0%', y:'0%', time: 200, complete: function(){
+                    			if($am(id).getAttribute('data-load')){
+			                    	console.log('exec data-load:');
+			                    	setTimeout(function(){
+			                    		window[$am(id).getAttribute('data-load')](jq('#modalContainer').get());
+			                    	}, 0);
+			                    }
+                    		}});
                     	}});
+                    }else{/** no transition: only exec onload method*/
+                    	if($am(id).getAttribute('data-load')){
+			                    	console.log('exec data-load:');
+			                    	setTimeout(function(){
+			                    		window[$am(id).getAttribute('data-load')](jq('#modalContainer').get());
+			                    	}, 0);
+			                    }
+                    }
+                    
+                     if($am(id).getAttribute('data-hideModal')){
+                    	jq('#modalContainer').unbind('click').bind('click', function(e){
+			            	if(e.target && e.target.id == 'modalContainer')
+			            		window[$am(id).getAttribute('data-hideModal')]();
+			            });
+                    }
+                    else{
+                    	jq('#modalContainer').unbind('click').bind('click', function(e){
+			            	if(e.target && e.target.id == 'modalContainer')
+			            		$.ui.hideModal();
+			            });	
                     }
                 }
             } catch(e) {
