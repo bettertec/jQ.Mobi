@@ -1069,7 +1069,7 @@ if (!window.jq || typeof (jq) !== "function") {
 			* @title $().log(message)
 			*/
 			log: function(msg) {
-				console.log(msg);
+				$BT.log.log(msg);
 			},
 			/**
 			* alerts an error
@@ -1077,7 +1077,7 @@ if (!window.jq || typeof (jq) !== "function") {
 			* @title $().error(message)
 			*/
 			error: function(msg) {
-				alert(msg);
+				$BT.log.error(msg);
 			},
             /**
             * Returns the parent nodes of the elements based off the selector
