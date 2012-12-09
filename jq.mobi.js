@@ -1063,6 +1063,22 @@ if (!window.jq || typeof (jq) !== "function") {
             width:function(){
                 return this.offset().width;
             },
+			/**
+			* logs a given message in console or via a logger
+			* @return nothing
+			* @title $().log(message)
+			*/
+			log: function(msg) {
+				console.log(msg);
+			},
+			/**
+			* alerts an error
+			* @return nothing
+			* @title $().error(message)
+			*/
+			error: function(msg) {
+				alert(msg);
+			},
             /**
             * Returns the parent nodes of the elements based off the selector
                 ```
@@ -1506,7 +1522,7 @@ if (!window.jq || typeof (jq) !== "function") {
                     }, settings.timeout);
                 xhr.send(settings.data);
             } catch (e) {
-                console.log(e);
+                $().log(e);
             }
             return xhr;
         };

@@ -85,7 +85,7 @@
 				this.isActive = true;
 				
 		        if (!options) {
-		            alert("Please provide configuration options for animation of " + this.el.id);
+		            $().error("Please provide configuration options for animation of " + this.el.id);
 		            return;
 		        }
 			
@@ -396,7 +396,7 @@
 					var el = elID;
 				}
 				if(!el) {
-					alert("Could not find element for scroller " + elID);
+					$().error("Could not find element for scroller " + elID);
 					return;
 				}
 				if(opts.useJsScroll) return new jsScroller(el, opts);
@@ -719,7 +719,7 @@
 				this.refreshContainer.style.display = "block";
 				this.refreshContainer.style.height = this.refreshHeight + 'px';
 				this.refreshTriggered = true;
-				console.log("Triggering refresh-trigger");
+				$().log("Triggering refresh-trigger");
 				$.trigger(this, 'refresh-trigger');
 				this.scrollTo({
 					y: this.refreshHeight,
@@ -781,7 +781,7 @@
 					complete: endAnimationCb
 				});
 			}
-			console.log("killing refresh flag");
+			$().log("killing refresh flag");
 			this.refreshTriggered = false;
 			//this.el.addEventListener('touchend', this, false);
 		}
@@ -939,7 +939,7 @@
 
 		jsScroller.prototype.getViewportSize = function() {
 			var style = window.getComputedStyle(this.container);
-			if(isNaN(numOnly(style.paddingTop))) alert((typeof style.paddingTop) + '::' + style.paddingTop + ':');
+			if(isNaN(numOnly(style.paddingTop))) $().error((typeof style.paddingTop) + '::' + style.paddingTop + ':');
 			return {
 				h: (this.container.clientHeight > window.innerHeight ? window.innerHeight : this.container.clientHeight - numOnly(style.paddingTop) - numOnly(style.paddingBottom)),
 				w: (this.container.clientWidth > window.innerWidth ? window.innerWidth : this.container.clientWidth - numOnly(style.paddingLeft) - numOnly(style.paddingRight))
@@ -1608,7 +1608,7 @@
                 this.container = containerEl;
             }
             if (!this.container) {
-                alert("Error finding container for popup " + containerEl);
+                $().error("Error finding container for popup " + containerEl);
                 return;
             }
             
@@ -1636,7 +1636,7 @@
                 if (queue.length == 1)
                     this.show();
             } catch (e) {
-                console.log("error adding popup " + e);
+                $().log("error adding popup " + e);
             }
         
         };
@@ -1789,7 +1789,7 @@
                     this.el = elID;
                 }
                 if(!this.el) {
-                    alert("Could not find element for actionsheet " + elID);
+                    $().error("Could not find element for actionsheet " + elID);
                     return;
                 }
 
@@ -1843,7 +1843,7 @@
                         markup.css("-webkit-transform", "translate3d(0," + (height) + "px,0)");
                     }, 10);
                 } catch(e) {
-                    alert("error adding actionsheet" + e);
+                    $().error("error adding actionsheet" + e);
                 }
             };
         actionsheet.prototype = {
@@ -1891,7 +1891,7 @@
          //   if ($.os.android == false) return; -  iOS users seem to want this too, so we'll let everyone join the party
             var container = elID && document.getElementById(elID) ? document.getElementById(elID) : document;
             if (!container) {
-                alert("Could not find container element for passwordBox " + elID);
+                $().error("Could not find container element for passwordBox " + elID);
                 return;
             }
             var sels = container.getElementsByTagName("input");
@@ -1930,12 +1930,12 @@
             if (!$.os.android || $.os.androidICS)
                return;
             if (!$.fn['scroller']) {
-                alert("This library requires jq.web.Scroller");
+                $().error("This library requires jq.web.Scroller");
                 return;
             }
             var container = elID && document.getElementById(elID) ? document.getElementById(elID) : document;
             if (!container) {
-                alert("Could not find container element for jq.web.selectBox " + elID);
+                $().error("Could not find container element for jq.web.selectBox " + elID);
                 return;
             }
             var sels = container.getElementsByTagName("select");
@@ -2096,7 +2096,7 @@
             try {
                 document.getElementById("jqmobiSelectModal").style.display = 'block';
             } catch (e) {
-                console.log("Error showing div " + e);
+                $().log("Error showing div " + e);
             }
             try {
                 if (div) {
@@ -2113,7 +2113,7 @@
                     });
                 }
             } catch (e) {
-                console.log("error init dropdown" + e);
+                $().log("error init dropdown" + e);
             }
             div = null;
             el = null;
@@ -2208,7 +2208,7 @@
                     });
                 
                 } catch (e) {
-                    console.log("Error creating select html " + e);
+                    $().log("Error creating select html " + e);
                 }
                 modalDiv = null;
                 myDiv = null;
@@ -3665,7 +3665,7 @@ if (!HTMLElement.prototype.unwatch) {
             var that = this;
             try {
                 if($am(id)) {
-                	console.log($am(id));
+                	$().log($am(id));
                 	jq("#modalContainer").css('display', 'none');
                 	
                     jq("#modalContainer").html($.feat.nativeTouchScroll ? $am(id).innerHTML : $am(id).childNodes[0].innerHTML + '', true);
@@ -3690,7 +3690,7 @@ if (!HTMLElement.prototype.unwatch) {
                     	$.ui.css3animate($('#modalContainer'), {x: x_from, y:'0%', time: 0, complete: function(){
                     		$.ui.css3animate($('#modalContainer'), {x:'0%', y:'0%', time: 200, complete: function(){
                     			if($am(id).getAttribute('data-load')){
-			                    	console.log('exec data-load:');
+			                    	$().log('exec data-load:');
 			                    	setTimeout(function(){
 			                    		window[$am(id).getAttribute('data-load')](jq('#modalContainer').get());
 			                    	}, 0);
@@ -3699,7 +3699,7 @@ if (!HTMLElement.prototype.unwatch) {
                     	}});
                     }else{/** no transition: only exec onload method*/
                     	if($am(id).getAttribute('data-load')){
-			                    	console.log('exec data-load:');
+			                    	$().log('exec data-load:');
 			                    	setTimeout(function(){
 			                    		window[$am(id).getAttribute('data-load')](jq('#modalContainer').get());
 			                    	}, 0);
@@ -3720,7 +3720,7 @@ if (!HTMLElement.prototype.unwatch) {
                     }
                 }
             } catch(e) {
-                console.log("Error with modal - " + e, this.modalWindow);
+                $().log("Error with modal - " + e, this.modalWindow);
             }
         },
         /**
@@ -3747,13 +3747,13 @@ if (!HTMLElement.prototype.unwatch) {
          * @title $.ui.updateContentDiv(id,content);
          */
         updateContentDiv: function(id, content) {
-        	console.log('updateContentDiv');
+        	$().log('updateContentDiv');
         	
             var el = $am(id);
             if(!el){
             	return;
             }
-            console.log(el);
+            $().log(el);
 
             var newDiv = document.createElement("div");
             newDiv.innerHTML = content;
@@ -3762,16 +3762,16 @@ if (!HTMLElement.prototype.unwatch) {
 
 
             if(el.getAttribute("js-scrolling") && el.getAttribute("js-scrolling").toLowerCase() == "yes") {
-            	console.log('js-scrolling');
+            	$().log('js-scrolling');
                 $.cleanUpContent(el.childNodes[0], false, true);
                 el.childNodes[0].innerHTML = newDiv.innerHTML;
             } else {
-            	console.log('non js-scrolling');
+            	$().log('non js-scrolling');
                 $.cleanUpContent(el, false, true);
                 el.innerHTML = newDiv.innerHTML;
             }
             if($(newDiv).title) el.title = $(newDiv).title;
-            console.log(el);
+            $().log(el);
             return el;
         },
         /**
@@ -3802,10 +3802,10 @@ if (!HTMLElement.prototype.unwatch) {
             var that = this;
 
             myEl = null;
-            console.log("addContentDiv");
-            console.log(newDiv);
+            $().log("addContentDiv");
+            $().log(newDiv);
             that.addDivAndScroll(newDiv, refresh, refreshFunc);
-            console.log(newDiv);
+            $().log(newDiv);
             newDiv = null;
             return newId;
         },
@@ -4224,7 +4224,7 @@ if (!HTMLElement.prototype.unwatch) {
 
                     //Here we check to see if we are retaining the div, if so update it
                     if($am(urlHash) !== undefined) {
-                    	console.log("ajax response: update current div");
+                    	$().log("ajax response: update current div");
                         that.updateContentDiv(urlHash, xmlhttp.responseText);
                         $am(urlHash).title = anchor.title ? anchor.title : target;
                     } else if(that.isAjaxApp || anchor.getAttribute("data-persist-ajax")) {
@@ -4468,7 +4468,7 @@ if (!HTMLElement.prototype.unwatch) {
                             },
                             error: function(msg) {
                                 //still trigger the file as being loaded to not block jq.ui.ready
-                                console.log("Error with deferred load " + AppMobi.webRoot + defer[j])
+                                $().log("Error with deferred load " + AppMobi.webRoot + defer[j])
                                 loaded++;
                                 if(loaded >= toLoad) {
                                     $(document).trigger("defer:loaded");
