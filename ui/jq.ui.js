@@ -85,7 +85,7 @@
 				this.isActive = true;
 				
 		        if (!options) {
-		            $().error("Please provide configuration options for animation of " + this.el.id);
+		            alert("Please provide configuration options for animation of " + this.el.id);
 		            return;
 		        }
 			
@@ -396,7 +396,7 @@
 					var el = elID;
 				}
 				if(!el) {
-					$().error("Could not find element for scroller " + elID);
+					alert("Could not find element for scroller " + elID);
 					return;
 				}
 				if(opts.useJsScroll) return new jsScroller(el, opts);
@@ -719,7 +719,7 @@
 				this.refreshContainer.style.display = "block";
 				this.refreshContainer.style.height = this.refreshHeight + 'px';
 				this.refreshTriggered = true;
-				$().log("Triggering refresh-trigger");
+				console.log("Triggering refresh-trigger");
 				$.trigger(this, 'refresh-trigger');
 				this.scrollTo({
 					y: this.refreshHeight,
@@ -781,7 +781,7 @@
 					complete: endAnimationCb
 				});
 			}
-			$().log("killing refresh flag");
+			console.log("killing refresh flag");
 			this.refreshTriggered = false;
 			//this.el.addEventListener('touchend', this, false);
 		}
@@ -939,7 +939,7 @@
 
 		jsScroller.prototype.getViewportSize = function() {
 			var style = window.getComputedStyle(this.container);
-			if(isNaN(numOnly(style.paddingTop))) $().error((typeof style.paddingTop) + '::' + style.paddingTop + ':');
+			if(isNaN(numOnly(style.paddingTop))) alert((typeof style.paddingTop) + '::' + style.paddingTop + ':');
 			return {
 				h: (this.container.clientHeight > window.innerHeight ? window.innerHeight : this.container.clientHeight - numOnly(style.paddingTop) - numOnly(style.paddingBottom)),
 				w: (this.container.clientWidth > window.innerWidth ? window.innerWidth : this.container.clientWidth - numOnly(style.paddingLeft) - numOnly(style.paddingRight))
@@ -1608,7 +1608,7 @@
                 this.container = containerEl;
             }
             if (!this.container) {
-                $().error("Error finding container for popup " + containerEl);
+                alert("Error finding container for popup " + containerEl);
                 return;
             }
             
@@ -1636,7 +1636,7 @@
                 if (queue.length == 1)
                     this.show();
             } catch (e) {
-                $().log("error adding popup " + e);
+                console.log("error adding popup " + e);
             }
         
         };
@@ -1789,7 +1789,7 @@
                     this.el = elID;
                 }
                 if(!this.el) {
-                    $().error("Could not find element for actionsheet " + elID);
+                    alert("Could not find element for actionsheet " + elID);
                     return;
                 }
 
@@ -1843,7 +1843,7 @@
                         markup.css("-webkit-transform", "translate3d(0," + (height) + "px,0)");
                     }, 10);
                 } catch(e) {
-                    $().error("error adding actionsheet" + e);
+                    alert("error adding actionsheet" + e);
                 }
             };
         actionsheet.prototype = {
@@ -1891,7 +1891,7 @@
          //   if ($.os.android == false) return; -  iOS users seem to want this too, so we'll let everyone join the party
             var container = elID && document.getElementById(elID) ? document.getElementById(elID) : document;
             if (!container) {
-                $().error("Could not find container element for passwordBox " + elID);
+                alert("Could not find container element for passwordBox " + elID);
                 return;
             }
             var sels = container.getElementsByTagName("input");
@@ -1930,12 +1930,12 @@
             if (!$.os.android || $.os.androidICS)
                return;
             if (!$.fn['scroller']) {
-                $().error("This library requires jq.web.Scroller");
+                alert("This library requires jq.web.Scroller");
                 return;
             }
             var container = elID && document.getElementById(elID) ? document.getElementById(elID) : document;
             if (!container) {
-                $().error("Could not find container element for jq.web.selectBox " + elID);
+                alert("Could not find container element for jq.web.selectBox " + elID);
                 return;
             }
             var sels = container.getElementsByTagName("select");
@@ -2096,7 +2096,7 @@
             try {
                 document.getElementById("jqmobiSelectModal").style.display = 'block';
             } catch (e) {
-                $().log("Error showing div " + e);
+                console.log("Error showing div " + e);
             }
             try {
                 if (div) {
@@ -2113,7 +2113,7 @@
                     });
                 }
             } catch (e) {
-                $().log("error init dropdown" + e);
+                console.log("error init dropdown" + e);
             }
             div = null;
             el = null;
@@ -2208,7 +2208,7 @@
                     });
                 
                 } catch (e) {
-                    $().log("Error creating select html " + e);
+                    console.log("Error creating select html " + e);
                 }
                 modalDiv = null;
                 myDiv = null;
@@ -3665,7 +3665,7 @@ if (!HTMLElement.prototype.unwatch) {
             var that = this;
             try {
                 if($am(id)) {
-                	$().log($am(id));
+                	console.log($am(id));
                 	jq("#modalContainer").css('display', 'none');
                 	
                     jq("#modalContainer").html($.feat.nativeTouchScroll ? $am(id).innerHTML : $am(id).childNodes[0].innerHTML + '', true);
@@ -3690,7 +3690,7 @@ if (!HTMLElement.prototype.unwatch) {
                     	$.ui.css3animate($('#modalContainer'), {x: x_from, y:'0%', time: 0, complete: function(){
                     		$.ui.css3animate($('#modalContainer'), {x:'0%', y:'0%', time: 200, complete: function(){
                     			if($am(id).getAttribute('data-load')){
-			                    	$().log('exec data-load:');
+			                    	console.log('exec data-load:');
 			                    	setTimeout(function(){
 			                    		window[$am(id).getAttribute('data-load')](jq('#modalContainer').get());
 			                    	}, 0);
@@ -3699,12 +3699,13 @@ if (!HTMLElement.prototype.unwatch) {
                     	}});
                     }else{/** no transition: only exec onload method*/
                     	if($am(id).getAttribute('data-load')){
-			                    	$().log('exec data-load:');
+			                    	console.log('exec data-load:');
 			                    	setTimeout(function(){
 			                    		window[$am(id).getAttribute('data-load')](jq('#modalContainer').get());
 			                    	}, 0);
 			                    }
                     }
+                    $.ui.panelLoaded($am(id));
                     
                      if($am(id).getAttribute('data-hideModal')){
                     	jq('#modalContainer').unbind('click').bind('click', function(e){
@@ -3720,7 +3721,7 @@ if (!HTMLElement.prototype.unwatch) {
                     }
                 }
             } catch(e) {
-                $().log("Error with modal - " + e, this.modalWindow);
+                console.log("Error with modal - " + e, this.modalWindow);
             }
         },
         /**
@@ -3747,13 +3748,13 @@ if (!HTMLElement.prototype.unwatch) {
          * @title $.ui.updateContentDiv(id,content);
          */
         updateContentDiv: function(id, content) {
-        	$().log('updateContentDiv');
+        	console.log('updateContentDiv');
         	
             var el = $am(id);
             if(!el){
             	return;
             }
-            $().log(el);
+            console.log(el);
 
             var newDiv = document.createElement("div");
             newDiv.innerHTML = content;
@@ -3762,16 +3763,16 @@ if (!HTMLElement.prototype.unwatch) {
 
 
             if(el.getAttribute("js-scrolling") && el.getAttribute("js-scrolling").toLowerCase() == "yes") {
-            	$().log('js-scrolling');
+            	console.log('js-scrolling');
                 $.cleanUpContent(el.childNodes[0], false, true);
                 el.childNodes[0].innerHTML = newDiv.innerHTML;
             } else {
-            	$().log('non js-scrolling');
+            	console.log('non js-scrolling');
                 $.cleanUpContent(el, false, true);
                 el.innerHTML = newDiv.innerHTML;
             }
             if($(newDiv).title) el.title = $(newDiv).title;
-            $().log(el);
+            console.log(el);
             return el;
         },
         /**
@@ -3802,10 +3803,10 @@ if (!HTMLElement.prototype.unwatch) {
             var that = this;
 
             myEl = null;
-            $().log("addContentDiv");
-            $().log(newDiv);
+            console.log("addContentDiv");
+            console.log(newDiv);
             that.addDivAndScroll(newDiv, refresh, refreshFunc);
-            $().log(newDiv);
+            console.log(newDiv);
             newDiv = null;
             return newId;
         },
@@ -4001,10 +4002,21 @@ if (!HTMLElement.prototype.unwatch) {
             if(typeof fnc == "string" && window[fnc]) {
                 window[fnc](what);
             }
+            $.ui.panelLoaded($(what)); //trigger generic panelLoadedMethod
             $(what).trigger("loadpanel");
             if(this.isSideMenuOn()) {
                 this.toggleSideMenu(false);
             }
+        },
+        
+        /**
+         * fix for android <4.0 for Button onpressed behaviour
+         */
+        panelLoaded: function(div) {
+        	//TODO: include fully in jqmobi
+        	if(typeof addButtonActiveAndroid != 'undefined'){
+        		addButtonActiveAndroid(div);	
+        	}
         },
         /**
          * Helper function that parses a contents html for any script tags and either adds them or executes the code
@@ -4224,7 +4236,7 @@ if (!HTMLElement.prototype.unwatch) {
 
                     //Here we check to see if we are retaining the div, if so update it
                     if($am(urlHash) !== undefined) {
-                    	$().log("ajax response: update current div");
+                    	console.log("ajax response: update current div");
                         that.updateContentDiv(urlHash, xmlhttp.responseText);
                         $am(urlHash).title = anchor.title ? anchor.title : target;
                     } else if(that.isAjaxApp || anchor.getAttribute("data-persist-ajax")) {
@@ -4468,7 +4480,7 @@ if (!HTMLElement.prototype.unwatch) {
                             },
                             error: function(msg) {
                                 //still trigger the file as being loaded to not block jq.ui.ready
-                                $().log("Error with deferred load " + AppMobi.webRoot + defer[j])
+                                console.log("Error with deferred load " + AppMobi.webRoot + defer[j])
                                 loaded++;
                                 if(loaded >= toLoad) {
                                     $(document).trigger("defer:loaded");
